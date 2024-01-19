@@ -2,6 +2,7 @@ import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import { createAccessToken } from "../libs/jwt.js";
 
+//Registro
 export const register = async (req, res) => {
   const { email, password, username } = req.body;
 
@@ -33,6 +34,7 @@ export const register = async (req, res) => {
   }
 };
 
+//Login
 export const login = async (req, res) => {
   const { email, password } = req.body;
 
@@ -65,4 +67,12 @@ export const login = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
+};
+
+//Logout
+export const logout = (req, res) => {
+  res.cookie("token", "", {
+    expires: new Date(0),
+  });
+  return res.sendStatus(200);
 };
