@@ -2,7 +2,9 @@ import Task from "../models/tasks.model.js";
 
 //Traer todo
 export const getTasks = async (req, res) => {
-  const tasks = await Task.find();
+  const tasks = await Task.find({
+    user: req.user.id,
+  }).populate("user");
   res.json(tasks);
 };
 
@@ -13,6 +15,7 @@ export const createTask = async (req, res) => {
     title,
     description,
     date,
+    user: req.user.id,
   });
   const savedTask = await newTask.save();
   res.json(savedTask);
