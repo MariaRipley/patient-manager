@@ -1,6 +1,6 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import { createAccessToken } from "../libs/jwt.js";
 
 export const register = async (req, res) => {
   const { email, password, username } = req.body;
@@ -16,21 +16,18 @@ export const register = async (req, res) => {
 
     const userSaved = await newUser.save();
 
-
-
+    //Crear y obtener el token
+    const token = await createAccessToken({ id: userSaved._id });
+    //Guardar token en una cookie
     res.cookie("token", token);
-        res.json({
-          message: "User created successfully",
-        });
-
-    //Para que la interfaz del front lo use:
-    // res.json({
-    //   id: userSaved._id,
-    //   username: userSaved.username,
-    //   email: userSaved.email,
-    //   createdAt: userSaved.createdAt,
-    //   updatedAt: userSaved.updatedAt,
-    // });
+    //Responder al frontend los datos de usuario y el token
+    res.json({
+      id: userSaved._id,
+      username: userSaved.username,
+      email: userSaved.email,
+      createdAt: userSaved.createdAt,
+      updatedAt: userSaved.updatedAt,
+    });
   } catch (error) {
     console.log(error);
   }

@@ -1,4 +1,5 @@
-import { TOKEN_SECRET } from "../config";
+import jwt from "jsonwebtoken";
+import { TOKEN_SECRET } from "../config.js";
 
 //Token
 export function createAccessToken(payload) {
