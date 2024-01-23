@@ -1,15 +1,17 @@
 import { useForm } from "react-hook-form";
+import { registerRequest } from "../api/auth";
 
 function RegisterPage() {
   const { register, handleSubmit } = useForm();
 
+  const onSubmit = handleSubmit(async (values) => {
+    const res = await registerRequest(values);
+    console.log(res);
+  });
+
   return (
     <div className="bg-zinc800 max-w-md p-10 rounded-md">
-      <form
-        onSubmit={handleSubmit((values) => {
-          console.log(values);
-        })}
-      >
+      <form onSubmit={onSubmit}>
         <input
           type="text"
           {...register("username", { required: true })}
