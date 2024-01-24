@@ -35,10 +35,13 @@ export const AuthProvider = ({ children }) => {
       const res = await loginRequest(user);
       console.log(res);
     } catch (error) {
+      let errorArray = [];
       if (Array.isArray(error.response.data)) {
-        setErrors(error.response.data);
+        errorArray = error.response.data;
+      } else {
+        errorArray = [error.response.data.message];
       }
-      setErrors([error.response.data.message]);
+      setErrors(errorArray);
     }
   };
 
