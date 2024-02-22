@@ -3,8 +3,8 @@ import { useTasks } from "../context/TasksContext.jsx";
 
 function TaskFormPage() {
   const { register, handleSubmit } = useForm();
-  const { tasks } = useTasks();
-  console.log(tasks);
+  const { createTask } = useTasks();
+  console.log(createTask());
 
   const onSubmit = handleSubmit((data) => {
     console.log(data);
