@@ -20,6 +20,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [errors, setErrors] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   //Función para recibir datos de usuario (registro)
   const signup = async (user) => {
@@ -69,17 +70,23 @@ export const AuthProvider = ({ children }) => {
 
       if (!cookies.token) {
         setIsAuthenticated(false);
-        setUser(null);
-        return;
+        setLoading(false);
+        return setUser(null);
       }
       try {
         const res = await verifyTokenRequest(cookies.token);
-        if (!res.data) return setIsAuthenticated(false);
+        if (!res.data) {
+          setIsAuthenticated(false);
+          setLoading(false);
+          return;
+        }
         setIsAuthenticated(true);
         setUser(res.data);
+        setLoading(false);
       } catch (error) {
         setIsAuthenticated(false);
         setUser(null);
+        setLoading(false);
       }
     }
 
@@ -91,6 +98,7 @@ export const AuthProvider = ({ children }) => {
       value={{
         signup,
         signin,
+        loading,
         user,
         isAuthenticated,
         errors,
