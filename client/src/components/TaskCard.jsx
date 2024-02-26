@@ -1,9 +1,12 @@
 import { useTasks } from "../context/TasksContext";
 import { Link } from "react-router-dom";
+import days from "dayjs";
+import utc from "dayjs/plugin/utc";
+days.extend(utc);
 
 function TaskCard({ task }) {
-  const date = new Date(parseInt(task.date));
-  const legibleDate = date.toLocaleDateString();
+  // const date = new Date(parseInt(task.date));
+  // const legibleDate = date.toLocaleDateString();
 
   const { deleteTask } = useTasks();
 
@@ -23,7 +26,7 @@ function TaskCard({ task }) {
         </div>
       </header>
       <p className="text-slate-300">{task.description}</p>
-      <p>{legibleDate}</p>
+      <p>{days(task.date).utc().format("DD/MM/YYYY")}</p>
     </div>
   );
 }
